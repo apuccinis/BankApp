@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bank;
+package core.models;
 
+import core.models.Account;
 import java.util.ArrayList;
 
 /**
@@ -49,5 +50,19 @@ public class User {
     public void addAccount(Account account) {
         this.accounts.add(account);
     }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+    
+    
     
 }
