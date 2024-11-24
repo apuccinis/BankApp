@@ -13,14 +13,6 @@ public class Account {
     private String id;
     private User owner;
     private double balance;
-
-    public Account(String id, User owner) {
-        this.id = id;
-        this.owner = owner;
-        this.balance = 0;
-        
-        this.owner.addAccount(this);
-    }
     
     public Account(String id, User owner, double balance) {
         this.id = id;

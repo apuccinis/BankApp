@@ -8,19 +8,18 @@ import core.views.BankFrame;
 
 /**
  *
- * @author User
+ * @author alepu
  */
 public class Main {
-    
+
     public static void main(String args[]) {
-    
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new BankFrame().setVisible(true);
             }
         });
-        
+
     }
 }

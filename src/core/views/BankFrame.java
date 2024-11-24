@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package core.views;
 
 import core.controllers.AccountController;
@@ -10,12 +6,8 @@ import core.controllers.UserController;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.User;
-import core.models.Transaction;
-import core.models.TransactionType;
+import core.models.transactions.Transaction;
 import core.models.Account;
-import core.models.storage.StorageAccount;
-import core.models.storage.StorageTransaction;
-import core.models.storage.StorageUser;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.JOptionPane;
@@ -26,11 +18,11 @@ import javax.swing.table.DefaultTableModel;
  * @author edangulo
  */
 public class BankFrame extends javax.swing.JFrame {
-    
+
     private ArrayList<Account> accounts;
     private ArrayList<Transaction> transactions;
     private ArrayList<User> users;
-    
+
     /**
      * Creates new form BankFrame
      */
@@ -535,18 +527,17 @@ public class BankFrame extends javax.swing.JFrame {
             String firstname = FirstNameTextField.getText();
             String lastname = LastNameTextField.getText();
             String age = AgeTextField.getText();
-            
+
             // Llamar al controlador para crear el usuario (Del Template MVC)
             Response response = UserController.createUser(id, firstname, lastname, age);
 
-            // Manejo de respuesta
             if (response.getStatus() >= 500) {
                 JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
             } else if (response.getStatus() >= 400) {
                 JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, response.getMessage(), "User Created", JOptionPane.INFORMATION_MESSAGE);
-                // Limpiar campos de texto
+
                 UserIDTextField.setText("");
                 FirstNameTextField.setText("");
                 LastNameTextField.setText("");
@@ -562,18 +553,17 @@ public class BankFrame extends javax.swing.JFrame {
         try {
             String userId = AccountUserIDTextField.getText();
             String balance = BalanceTextField.getText();
-        
+
             // Invocar al controlador para crear la cuenta (Del Template MVC)
             Response response = AccountController.createAccount(userId, balance);
-        
-            // Manejo de respuesta
+
             if (response.getStatus() >= 500) {
                 JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
             } else if (response.getStatus() >= 400) {
                 JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, response.getMessage(), "Account Created", JOptionPane.INFORMATION_MESSAGE);
-                // Limpiar campos de texto
+
                 AccountUserIDTextField.setText("");
                 BalanceTextField.setText("");
             }
@@ -583,8 +573,8 @@ public class BankFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_CreateAccountButtonActionPerformed
 
     private void ExcecuteTransactionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExcecuteTransactionButtonActionPerformed
-        // TODO add your handling code here:
         try {
+            // Obtener los valores del formulario
             String type = TypejComboBox.getItemAt(TypejComboBox.getSelectedIndex());
             String sourceAccountId = SourceAccountTextField.getText();
             String destinationAccountId = DestinationAccountTextField.getText();
@@ -593,11 +583,9 @@ public class BankFrame extends javax.swing.JFrame {
             // Llamar al controlador (Del Template MVC)
             Response response = TransactionController.createTransaction(type, sourceAccountId, destinationAccountId, amount);
 
-            // Manejar la respuesta
             if (response.getStatus() == Status.CREATED) {
                 JOptionPane.showMessageDialog(this, response.getMessage(), "Successful Transaction", JOptionPane.INFORMATION_MESSAGE);
 
-                // Limpiar los campos
                 SourceAccountTextField.setText("");
                 DestinationAccountTextField.setText("");
                 AmountTextField.setText("");
@@ -614,19 +602,14 @@ public class BankFrame extends javax.swing.JFrame {
         // Llamar al controlador para obtener los usuarios (Del Template MVC)
         Response response = UserController.getAllUsers();
 
-        // Verificar el estado de la respuesta
         if (response.getStatus() == Status.OK) {
-            // Limpiar la tabla
             DefaultTableModel model = (DefaultTableModel) ListUsersTable.getModel();
             model.setRowCount(0);
 
-            // Acceder a los datos
             ArrayList<User> users = (ArrayList<User>) response.getObject();
 
-            // Agregar los usuarios a la tabla
             for (User user : users) {
-                model.addRow(new Object[]{
-                    user.getId(), user.getFirstname() + " " + user.getLastname(), user.getAge(), user.getNumAccounts()});
+                model.addRow(new Object[]{user.getId(), user.getFirstname() + " " + user.getLastname(), user.getAge(), user.getNumAccounts()});
             }
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -638,19 +621,15 @@ public class BankFrame extends javax.swing.JFrame {
         // Llamar al controlador para obtener las cuentas (Del Template MVC)
         Response response = AccountController.getAllAccounts();
 
-        // Verificar el estado de la respuesta
         if (response.getStatus() == Status.OK) {
-            // Limpiar la tabla
+
             DefaultTableModel model = (DefaultTableModel) ListAccountsTable.getModel();
             model.setRowCount(0);
 
-            // Acceder a los datos
             ArrayList<Account> accounts = (ArrayList<Account>) response.getObject();
 
-            // Agregar las cuentas a la tabla
             for (Account account : accounts) {
-                model.addRow(new Object[]{
-                    account.getId(), account.getOwner().getId(), account.getBalance()});
+                model.addRow(new Object[]{account.getId(), account.getOwner().getId(), account.getBalance()});
             }
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -662,19 +641,24 @@ public class BankFrame extends javax.swing.JFrame {
         // Llamar al controlador para obtener las transacciones (Del Template MVC)
         Response response = TransactionController.getAllTransactions();
 
-        // Verificar el estado de la respuesta
         if (response.getStatus() == Status.OK) {
-            // Limpiar la tabla
+
             DefaultTableModel model = (DefaultTableModel) ListTransactionsTable.getModel();
             model.setRowCount(0);
 
-            // Acceder a los datos
             ArrayList<Transaction> transactions = (ArrayList<Transaction>) response.getObject();
+            Collections.reverse(transactions);
 
-            // Agregar las transacciones a la tabla
             for (Transaction transaction : transactions) {
+
+                String transactionType = transaction.getClass().getSimpleName();
+
                 model.addRow(new Object[]{
-                    transaction.getType().name(), transaction.getSourceAccount() != null ? transaction.getSourceAccount().getId() : "None", transaction.getDestinationAccount() != null ? transaction.getDestinationAccount().getId() : "None", transaction.getAmount()});
+                    transactionType,
+                    transaction.getSourceAccount() != null ? transaction.getSourceAccount().getId() : "None",
+                    transaction.getDestinationAccount() != null ? transaction.getDestinationAccount().getId() : "None",
+                    transaction.getAmount()
+                });
             }
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -684,7 +668,6 @@ public class BankFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField AccountUserIDTextField;

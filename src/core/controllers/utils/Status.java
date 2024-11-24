@@ -3,12 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package core.controllers.utils;
+
 /**
  *
  * @author User
  */
 public class Status {
-    // (Del Template MVC)
+    
     // Successful response
     public static final int OK = 200;
     public static final int CREATED = 201;

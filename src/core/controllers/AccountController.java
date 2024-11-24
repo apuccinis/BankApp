@@ -3,10 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package core.controllers;
-/**
- *
- * @author User
- */
+
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Account;
@@ -102,7 +99,7 @@ public class AccountController {
 
         return String.format("%03d", first) + "-" + String.format("%06d", second) + "-" + String.format("%02d", third);
     }
-    
+
     // Método para obtener todas las cuentas RESPONSE RESPONSE REFRESH de BankFrame
     public static Response getAllAccounts() {
         try {
@@ -117,5 +114,5 @@ public class AccountController {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
 }

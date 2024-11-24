@@ -3,12 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package core.controllers.utils;
+
 /**
  *
  * @author User
  */
 public class Response {
-    // (Del Template MVC)
+    
     private String message;
     private int status;
     private Object object;

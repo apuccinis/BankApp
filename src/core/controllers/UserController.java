@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package core.controllers;
+
 /**
  *
  * @author User
@@ -23,14 +24,14 @@ public class UserController {
             // Validación del id
             try {
                 idInt = Integer.parseInt(id);
-                if (idInt < 0 || String.valueOf(idInt).length() > 9) {
+                if (idInt <= 0 || id.length() > 9) {
                     return new Response("Id must be a positive integer with a maximum of 9 digits", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
                 return new Response("Id must be numeric", Status.BAD_REQUEST);
             }
 
-            // Validación del firstname
+            // Validacion del firstname
             if (firstname.isEmpty()) {
                 return new Response("Firstname must not be empty", Status.BAD_REQUEST);
             }
@@ -92,20 +93,20 @@ public class UserController {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     // Método para listar usuarios RESPONSE RESPONSE RESFRESH de BankFrame
     public static Response getAllUsers() {
         try {
             StorageUser storageUser = StorageUser.getInstance();
 
             ArrayList<User> users = storageUser.getUsers();
-            
+
             users.sort((obj1, obj2) -> (obj1.getId() - obj2.getId()));
-            
+
             return new Response("Users retrieved successfully", Status.OK, users);
         } catch (Exception ex) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
 }
